@@ -56,4 +56,69 @@
   </definition>
   <triggers/>
   <disabled>false</disabled>
+</flow-definition>[root@ip-10-21-150-108 ~]#
+[root@ip-10-21-150-108 ~]#
+[root@ip-10-21-150-108 ~]#
+[root@ip-10-21-150-108 ~]#
+[root@ip-10-21-150-108 ~]# java -jar jenkins-cli.jar -s http://localhost:8080/ -auth virajnemane:virajnemane -webSocket create-job imported_pipeline < NodeAppDeploy.xml
+[root@ip-10-21-150-108 ~]#
+[root@ip-10-21-150-108 ~]# cat NodeAppDeploy.xml
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.40">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.7.2"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.7.2">
+      <jobProperties/>
+      <triggers/>
+      <parameters>
+        <string>APPLICATION_ENVIRONMENT</string>
+        <string>Server_IP</string>
+      </parameters>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>APPLICATION_ENVIRONMENT</name>
+          <description></description>
+          <choices>
+            <string>DEV</string>
+            <string>PROD</string>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>Server_IP</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.83">
+    <scm class="hudson.plugins.git.GitSCM" plugin="git@4.4.3">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs>
+        <hudson.plugins.git.UserRemoteConfig>
+          <url>https://github.com/virajnemane/nodejenkinsapp.git</url>
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>*/master</name>
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <submoduleCfg class="list"/>
+      <extensions/>
+    </scm>
+    <scriptPath>Jenkinsfile</scriptPath>
+    <lightweight>true</lightweight>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
 </flow-definition>
