@@ -1,0 +1,43 @@
+version: '3'
+services:
+  app1:
+    container_name: nodeapp1
+    restart: always
+    build: ./node_mongo
+    ports:
+      - '3000'
+    links:
+      - mongo
+    networks:
+      - 'backend'
+  app2:
+    container_name: nodeapp2
+    restart: always
+    build: ./node_mongo
+    ports:
+      - '3000'
+    links:
+      - mongo
+    networks:
+      - 'backend'
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017'
+    networks:
+      - 'backend'
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    ports:
+      - '80:80'
+    depends_on:
+      - app1
+      - app2
+    networks:
+      - 'frontend'
+      - 'backend'
+networks:
+  'frontend' :
+  'backend' :
